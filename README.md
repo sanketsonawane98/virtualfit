@@ -5,17 +5,20 @@ VirtualFit is a cutting-edge web application that allows users to virtually try 
 <p align="center">
   <img src="public/landing.png" alt="VirtualFit Landing Page" width="100%" />
   <br>
+  <br>
   <em>VirtualFit Landing Page</em>
 </p>
 
 <p align="center">
   <img src="public/features.png" alt="VirtualFit Features" width="100%" />
   <br>
+  <br>
   <em>VirtualFit Features</em>
 </p>
 
 <p align="center">
   <img src="public/tryon.png" alt="VirtualFit Try-On Dashboard" width="100%" />
+  <br>
   <br>
   <em>VirtualFit Try-On Dashboard</em>
 </p>
