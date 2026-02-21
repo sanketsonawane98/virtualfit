@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// User Management
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  avatarUrl     String?
+  
+  // Supabase Auth integration
+  supabaseId    String    @unique // Links to Supabase auth.users.id
+  
+  // User photo (stored permanently)
+  userPhotoUrl  String?   // Full-body photo for try-ons
+  
+  // Credits & limits
+  credits       Int       @default(10) // Free credits
+  planType      String    @default("free") // free, pro, enterprise
+  
+  // Metadata
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+  
+  // Relations
+  tryOns        TryOn[]
+  
+  @@index([email])
+  @@index([supabaseId])
+  @@map("users")
+}
+
+// Products (Clothing Items)
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  category    String   // shirt, dress, pants, jacket, etc.
+  gender      String   // male, female, unisex
+  
+  // Image URLs
+  imageUrl    String   // Main product image (on white bg, front view)
+  thumbnail   String?  // Thumbnail for catalog
+  
+  // Metadata (flexible JSON)
+  metadata    Json?    // { brand, color, size, material, etc. }
+  
+  // Status
+  isActive    Boolean  @default(true)
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  tryOns      TryOn[]
+  
+  @@index([category, gender])
+  @@index([isActive])
+  @@map("products")
+}
+
+// Try-On Jobs
+model TryOn {
+  id              String   @id @default(cuid())
+  
+  // User reference
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Product reference (optional for external garment URLs)
+  productId       String?
+  product         Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  // Image URLs
+  userPhotoUrl    String   // Input: user's photo
+  productImageUrl String   // Input: product image
+  resultUrl       String?  // Output: AI-generated result
+  
+  // Processing status
+  status          String   @default("queued") // queued, processing, completed, failed
+  
+  // Replicate tracking
+  replicateId     String?  @unique // Prediction ID from Replicate
+  
+  // Performance metrics
+  processingTimeMs Int?    // Time taken to generate
+  
+  // Error handling
+  errorMessage    String?  // If status = failed
+  retryCount      Int      @default(0)
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  completedAt     DateTime?
+  
+  @@index([userId, createdAt(sort: Desc)]) // For user gallery
+  @@index([status]) // For job queue processing
+  @@index([replicateId]) // For webhook lookups
+  @@map("tryons")
+}
+
+// Rate Limiting (backup to Redis)
+model RateLimit {
+  id          String   @id @default(cuid())
+  userId      String
+  endpoint    String   // /api/tryon, /api/upload, etc.
+  requestCount Int     @default(1)
+  windowStart DateTime @default(now())
+  
+  @@unique([userId, endpoint, windowStart])
+  @@index([userId, endpoint])
+  @@map("rate_limits")
+}
+
+// Analytics
+model Event {
+  id          String   @id @default(cuid())
+  userId      String?
+  eventName   String   // tryon_started, tryon_completed, photo_uploaded, etc.
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  
+  @@index([eventName, createdAt])
+  @@index([userId, createdAt])
+  @@map("events")
+}
