@@ -2,7 +2,23 @@
 
 VirtualFit is a cutting-edge web application that allows users to virtually try on clothing using advanced AI diffusion models. Simply upload a photo of yourself, grab a product link from your favorite retail store, and instantly see how the outfit looks on you.
 
-![VirtualFit Dashboard](https://images.unsplash.com/photo-1558769132-cb1fac08f7aa?auto=format&fit=crop&q=80&w=1200&h=400) *(Note: Replace with actual screenshot of your UI)*
+<p align="center">
+  <img src="public/landing.png" alt="VirtualFit Landing Page" width="100%" />
+  <br>
+  <em>VirtualFit Landing Page</em>
+</p>
+
+<p align="center">
+  <img src="public/features.png" alt="VirtualFit Features" width="100%" />
+  <br>
+  <em>VirtualFit Features</em>
+</p>
+
+<p align="center">
+  <img src="public/tryon.png" alt="VirtualFit Try-On Dashboard" width="100%" />
+  <br>
+  <em>VirtualFit Try-On Dashboard</em>
+</p>
 
 ## 🚀 Features
 
