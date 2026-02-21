@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✨ VirtualFit
 
-## Getting Started
+VirtualFit is a cutting-edge web application that allows users to virtually try on clothing using advanced AI diffusion models. Simply upload a photo of yourself, grab a product link from your favorite retail store, and instantly see how the outfit looks on you.
 
-First, run the development server:
+![VirtualFit Dashboard](https://images.unsplash.com/photo-1558769132-cb1fac08f7aa?auto=format&fit=crop&q=80&w=1200&h=400) *(Note: Replace with actual screenshot of your UI)*
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Photorealistic Virtual Try-On**: Powered by **IDM-VTON** (via fal.ai / Hugging Face), seamlessly blending the garment onto your body shape, respecting skin tone, lighting, and original garment geometry.
+- **Smart Product Extraction**: Paste any product URL (e.g., from Zara, H&M, Myntra) and our internal scraper automatically extracts the high-resolution product image.
+- **Auto Background Removal**: Integrates with `ZhengPeng7/BiRefNet` via Gradio spaces to instantly remove noisy retail backgrounds from the garment before generation.
+- **Premium UI/UX**: Built with Tailwind CSS, featuring deep dark mode, glassmorphism UI traits, floating animations, and a responsive masonry gallery.
+- **Personal Lookbook**: All try-ons are securely stored in a personal gallery powered by Supabase.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend**: Next.js 14 (App Router), React, Tailwind CSS
+- **Backend**: Next.js Server Actions & API Routes
+- **Database & Auth**: Supabase (PostgreSQL, Row Level Security)
+- **AI Models**: IDM-VTON for try-on, BiRefNet for object isolation
+- **Data Scraping**: Cheerio
 
-## Learn More
+## ⚙️ Local Setup
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/virtualfit.git
+   cd virtualfit
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Configure Environment Variables:**
+   Create a `.env` file in the root directory and add the following keys. You will need accounts on Supabase and a Replicate/fal.ai token depending on your endpoint configuration.
+   
+   ```env
+   # Database & Auth
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   
+   # External Image Processing
+   REPLICATE_API_TOKEN=your_replicate_token
+   HF_TOKEN=your_huggingface_token # Optional: if using private HF APIs
+   ```
 
-## Deploy on Vercel
+4. **Initialize the Database:**
+   Push the Prisma schema to your Supabase PostgreSQL instance:
+   ```bash
+   npx prisma db push
+   npx prisma generate
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. **Run the Development Server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🗄️ Supabase Storage Setup
+
+To ensure image uploads work, you must create a public storage bucket in your Supabase dashboard:
+1. Go to **Storage** in your Supabase project.
+2. Click **New bucket** and name it `user-photos`.
+3. Set the bucket to **Public**.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE).
