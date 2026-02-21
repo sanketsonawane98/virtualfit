@@ -8,21 +8,21 @@ VirtualFit is a cutting-edge web application that allows users to virtually try 
   <br>
   <em>VirtualFit Landing Page</em>
 </p>
-
+<br>
 <p align="center">
   <img src="public/features.png" alt="VirtualFit Features" width="100%" />
   <br>
   <br>
   <em>VirtualFit Features</em>
 </p>
-
+<br>
 <p align="center">
   <img src="public/tryon.png" alt="VirtualFit Try-On Dashboard" width="100%" />
   <br>
   <br>
   <em>VirtualFit Try-On Dashboard</em>
 </p>
-
+<br>
 ## 🚀 Features
 
 - **Photorealistic Virtual Try-On**: Powered by **IDM-VTON** (via fal.ai / Hugging Face), seamlessly blending the garment onto your body shape, respecting skin tone, lighting, and original garment geometry.
